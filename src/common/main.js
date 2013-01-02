@@ -7,6 +7,10 @@
 
 var $ = window.$.noConflict(true); // Required for Opera and IE
 
+var cur_request;
+var riak_headers;
+var cur_links;
+
 function extractData(rawText) {
 	var tokens, text = rawText.trim();
 
@@ -32,18 +36,32 @@ function extractData(rawText) {
 	}
 }
 
-var refreshJSON = function(data, status){
+var refreshJSON = function(){
 	var settings = {
 		success: updateEditor,
 		url: document.URL,
 		type: 'GET'
 	};
 
-    $.ajax(settings);
+    cur_request = $.ajax(settings);
 };
 
 function updateEditor(err, data, res){
 	if(res.status == 200){
+		var headers = cur_request.getAllResponseHeaders();
+
+		riak_headers = {};
+
+		headers.toString().split('\n').forEach(function(h){
+			var keyVal = h.split(':');
+
+			if(keyVal[0].toLowerCase().indexOf('x-riak') === 0){
+				riak_headers[keyVal[0].toLowerCase()] = keyVal[1];
+			}
+		});
+
+		cur_links = res.getResponseHeader('Link');	
+
 		var parsed = JSON.parse(res.responseText);
 		$("#editor").val(JSON.stringify(parsed, null, 4));
 		$("#errors").html('Updated ' + new Date());
@@ -72,8 +90,17 @@ function postDATA(){
 		success: refreshJSON,
 		url: document.URL,
 		data: stringifyedData,
-		type: 'PUT'
+		type: 'PUT',
+		headers: {
+			'Link': cur_links
+		}		
 	};
+
+	if(riak_headers){
+		for(var h in riak_headers){
+			settings.headers[h] = riak_headers[h];
+		}
+	}
 
 	$.ajax(settings);
 }
@@ -95,7 +122,9 @@ function load() {
 
 			document.documentElement.innerHTML = html;
 			$("#update_json_data").click(postDATA);
-			$("#refresh_btn").click(refreshJSON);			
+			$("#refresh_btn").click(refreshJSON);
+
+			refreshJSON();
 		}			
 	}
 }
