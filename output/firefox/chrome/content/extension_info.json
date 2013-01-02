@@ -8,7 +8,7 @@
   "background_scripts": [
     "main.js"
   ], 
-  "version": "0.1", 
+  "version": "0.1.1", 
   "id": "{470E0334-0A91-4811-AE67-ED45565A3C1E}", 
   "description": "Riak JSON editor"
 }

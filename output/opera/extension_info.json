@@ -8,7 +8,7 @@
   "background_scripts": [
     "main.js"
   ], 
-  "version": "0.1", 
+  "version": "0.1.1", 
   "id": "http://kangoextensions.com/extensions/riakjsoneditor/", 
   "description": "Riak JSON editor"
 }
