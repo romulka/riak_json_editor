@@ -1,0 +1,11 @@
+<?xml version="1.0" ?><widget id="http://kangoextensions.com/extensions/riakjsoneditor/" version="0.1" xmlns="http://www.w3.org/ns/widgets">
+	<name>Riak JSON editor</name>
+	<description>Riak JSON editor</description>
+	<author href="">z6sic6z</author>
+	<update-description href=""/>
+	<icon src="icons/icon100.png"/>
+	<content src="background.html"/>
+	<access origin="*"/>
+	<feature name="opera:share-cookies"/>
+    <feature name="opera:contextmenus"/>
+</widget>

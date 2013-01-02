@@ -1,0 +1,13 @@
+{
+  "description": "Riak JSON editor", 
+  "creator": "z6sic6z",
+  "homepage": "https://github.com/romulka",
+  "background_scripts": [
+    "main.js"
+  ], 
+  "version": "0.1", 
+  "content_scripts":[
+    "main.js"
+  ],
+  "name": "Riak JSON editor"
+}

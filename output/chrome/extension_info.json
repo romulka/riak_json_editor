@@ -1,0 +1,14 @@
+{
+  "kango_version": "1.0.1 final", 
+  "content_scripts": [
+    "main.js"
+  ], 
+  "name": "Riak JSON editor", 
+  "creator": "z6sic6z", 
+  "background_scripts": [
+    "main.js"
+  ], 
+  "version": "0.1", 
+  "id": "{0F373757-E260-4835-8A41-420ACFB2BAFA}", 
+  "description": "Riak JSON editor"
+}
