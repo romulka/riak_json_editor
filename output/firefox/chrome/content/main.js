@@ -3,6 +3,10 @@
 // @include */riak/*
 // @include */riak/*
 // @require jquery-1.8.2.min.js
+// @require codemirror.js
+// @require matchbrackets.js
+// @require continuecomment.js
+// @require javascript.js
 // ==/UserScript==
 
 var $ = window.$.noConflict(true); // Required for Opera and IE
@@ -10,6 +14,7 @@ var $ = window.$.noConflict(true); // Required for Opera and IE
 var cur_request;
 var riak_headers;
 var cur_links;
+var editor;
 
 function extractData(rawText) {
 	var tokens, text = rawText.trim();
@@ -63,17 +68,29 @@ function updateEditor(err, data, res){
 		cur_links = res.getResponseHeader('Link');	
 
 		var parsed = JSON.parse(res.responseText);
-		$("#editor").val(JSON.stringify(parsed, null, 4));
-		$("#errors").html('Updated ' + new Date());
+		editor.setValue(JSON.stringify(parsed, null, 4));
+
+		$("#errors").html('Last save ' + new Date());
 	}
 	else if(res.status == 304){
 		$("#errors").html('Not modified');
 	}
 }
 
+function formatJSON(){
+	var curJSON = editor.getValue();
+
+	try{
+		var parsed = JSON.parse(curJSON);
+		editor.setValue(JSON.stringify(parsed, null, 4));
+	}
+	catch(err){
+		$("#errors").html('JSON parse error');
+	}
+}
+
 function postDATA(){
-	var curJSON = $("#editor").val();
-	var parsedJSON;
+	var curJSON = editor.getValue();
 	var stringifyedData;
 
 	try{
@@ -107,7 +124,8 @@ function postDATA(){
 
 function load() {
 	var child, data;
-	if (document.body && (document.body.childNodes[0] && document.body.childNodes[0].tagName == "PRE" || document.body.children.length == 0)) {
+	if (document.body && (document.body.childNodes[0] && document.body.childNodes[0].tagName == "PRE" ||
+			document.body.children.length === 0)) {
 		child = document.body.children.length ? document.body.childNodes[0] : document.body;
 		data = extractData(child.innerText);
 
@@ -115,18 +133,31 @@ function load() {
 			var dataParsed = JSON.parse(data.text);
 			var dataText = JSON.stringify(dataParsed, null, 4);			
 
-			var html = '<textarea style="width: 80%; height: 500px;" id="editor">' + dataText + '</textarea><br/>' +
+			var html = '<textarea class="editor" id="editor">' + dataText + '</textarea><br/>' +
 					'<button type="submit" id="update_json_data">Save</button>' +
 					'<button id="refresh_btn">Get data from RIAK</button>' +
+					'<button id="format_json">Format</button>' +
 					'<div id="errors"></div>';
 
-			document.documentElement.innerHTML = html;
-			$("#update_json_data").click(postDATA);
-			$("#refresh_btn").click(refreshJSON);
+			$('body').html(html);
 
+			$('#update_json_data').click(postDATA);
+			$('#refresh_btn').click(refreshJSON);
+			$('#format_json').click(formatJSON);
+
+			editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
+				lineNumbers: true,
+				matchBrackets: true,
+				extraKeys: {"Enter": "newlineAndIndentContinueComment"}
+			});
+
+			editor.setSize(null, '90%');
 			refreshJSON();
 		}			
 	}
 }
 
-load();
+kango.invokeAsync('kango.io.getExtensionFileContents', 'codemirror.css', function(content) {
+	$("<style />").html(content).appendTo("head");
+	load();
+});

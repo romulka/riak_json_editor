@@ -3,12 +3,9 @@
   "content_scripts": [
     "main.js"
   ], 
-  "name": "Riak JSON editor", 
+  "description": "Riak JSON editor", 
   "creator": "z6sic6z", 
-  "background_scripts": [
-    "main.js"
-  ], 
-  "version": "0.1.1", 
+  "version": "0.1.3", 
   "id": "http://kangoextensions.com/extensions/riakjsoneditor/", 
-  "description": "Riak JSON editor"
+  "name": "Riak JSON editor"
 }
