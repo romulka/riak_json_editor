@@ -1,14 +1,15 @@
 ﻿// ==UserScript==
 // @name ChristmasTree
-// @include */riak/*
-// @include */riak/*
+// @include http://*/*
+// @include https://*/*
+// @include ftp://*/*
+// @include file:///*
 // @require jquery-1.8.2.min.js
 // @require codemirror.js
 // @require matchbrackets.js
 // @require continuecomment.js
 // @require javascript.js
 // ==/UserScript==
-
 var $ = window.$.noConflict(true); // Required for Opera and IE
 
 var cur_request;
@@ -126,12 +127,24 @@ function load() {
 	var child, data;
 	if (document.body && (document.body.childNodes[0] && document.body.childNodes[0].tagName == "PRE" ||
 			document.body.children.length === 0)) {
+	
 		child = document.body.children.length ? document.body.childNodes[0] : document.body;
 		data = extractData(child.innerText);
 
-		if(data){
-			var dataParsed = JSON.parse(data.text);
-			var dataText = JSON.stringify(dataParsed, null, 4);			
+		var isNotFound = child.innerText.indexOf('not found') === 0;
+
+		if(data || isNotFound){
+			var dataParsed;
+			var dataText;
+
+			if(!isNotFound){
+				dataParsed = JSON.parse(data.text);
+				dataText = JSON.stringify(dataParsed, null, 4);
+			}
+			else {
+				dataText = {notFount: true};
+				dataText = JSON.stringify(dataText, null, 4);
+			}
 
 			var html = '<textarea class="editor" id="editor">' + dataText + '</textarea><br/>' +
 					'<button type="submit" id="update_json_data">Save</button>' +
@@ -157,7 +170,12 @@ function load() {
 	}
 }
 
-kango.invokeAsync('kango.io.getExtensionFileContents', 'codemirror.css', function(content) {
-	$("<style />").html(content).appendTo("head");
-	load();
-});
+setTimeout(
+	function(){
+		kango.invokeAsync('kango.io.getExtensionFileContents', 'codemirror.css', function(content) {
+			$("<style />").html(content).appendTo("head");
+			load();
+		});
+	},
+	100
+);
