@@ -5,7 +5,8 @@
   ], 
   "description": "Riak JSON editor", 
   "creator": "z6sic6z", 
-  "version": "0.2.0", 
+  "version": "0.2.3", 
+  "options_page": "options.html", 
   "id": "{470E0334-0A91-4811-AE67-ED45565A3C1E}", 
   "name": "Riak JSON editor"
 }

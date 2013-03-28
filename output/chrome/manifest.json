@@ -22,7 +22,8 @@
     "48": "icons/icon48.png", 
     "16": "icons/button.png"
   }, 
-  "version": "0.2.0", 
+  "version": "0.2.3", 
+  "options_page": "options.html", 
   "background": {
     "page": "background.html"
   }, 

@@ -2,7 +2,7 @@
     <Description about="urn:mozilla:install-manifest">
         <em:id>{470E0334-0A91-4811-AE67-ED45565A3C1E}</em:id>
         <em:name>Riak JSON editor</em:name>
-        <em:version>0.2.0</em:version>
+        <em:version>0.2.3</em:version>
         <em:targetApplication>
             <Description>
                 <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
@@ -15,7 +15,7 @@
 		
 		
 		<em:iconURL>chrome://RiaknJSONneditor_kango/content/icons/icon32.png</em:iconURL>
-		
-		
+		<em:optionsURL>chrome://RiaknJSONneditor_kango/content/options.html</em:optionsURL>
+		<em:optionsType>3</em:optionsType>
     </Description>
 </RDF>

@@ -5,7 +5,8 @@
   ], 
   "description": "Riak JSON editor", 
   "creator": "z6sic6z", 
-  "version": "0.2.0", 
+  "version": "0.2.3", 
+  "options_page": "options.html", 
   "id": "http://kangoextensions.com/extensions/riakjsoneditor/", 
   "name": "Riak JSON editor"
 }
